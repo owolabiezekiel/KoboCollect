@@ -18,7 +18,7 @@ com.android.ddmlib.DdmPreferences.setTimeOut(60000)
 
 android {
     // The following are set in the common.gradle file
-    compileSdkVersion("Google Inc.:Google APIs:19")
+    compileSdkVersion 19
     buildToolsVersion("22.0.1")
     // compileSdkVersion(compileVersion)
     // buildToolsVersion(buildTools)
@@ -38,6 +38,16 @@ android {
             testCoverageEnabled(testCoverage) // Allows AndroidTest JaCoCo reports to be generated
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    flavorDimensions "default"
+
     packagingOptions { // Pick first occurrence of any files that cause conflicts, as defined in common.gradle
         packageList.each {
             pickFirst it
@@ -67,20 +77,20 @@ configurations.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
+    implementation fileTree(dir: 'libs', include: '*.jar')
     if (playServicesPath.exists() && gradle.useLocal) { // Local project is favoured
-        compile project(playServicesName)
+        implementation project(playServicesName)
     } else {
-        compile(group: groupId, name: playServicesArtifactName,
+        implementation(group: groupId, name: playServicesArtifactName,
                 version: (useLatestPlayServices ? latestVersion : playServicesSnapshot), ext: 'aar')
     }
 
     // Testing-only dependencies
-    androidTestCompile 'com.android.support.test:runner:0.3'
-    androidTestCompile 'com.android.support.test:rules:0.3'
-    androidTestCompile 'com.android.support:support-annotations:23.1.0'
-    androidTestCompile 'com.android.support:support-v13:23.1.0'
-    androidTestCompile 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:0.3'
+    androidTestImplementation 'com.android.support.test:rules:0.3'
+    androidTestImplementation 'com.android.support:support-annotations:23.1.0'
+    androidTestImplementation 'com.android.support:support-v13:23.1.0'
+    androidTestImplementation 'junit:junit:4.12'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
